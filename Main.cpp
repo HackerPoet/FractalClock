@@ -36,6 +36,11 @@ static const char* draw_clock_name[] = {
   "[C] Hide Clock",
   "[C] Draw Clock",
 };
+static const char* toggle_fullscreen_name[] = {
+  "[F11] Full screen",
+  "[F11] Exit full screen",
+};
+static const char* show_shortcuts_name = "[K] Hide keyboard shortcuts";
 
 static std::vector<sf::Vertex> line_array;
 static std::vector<sf::Vertex> point_array;
@@ -54,6 +59,7 @@ static bool use_tick = false;
 static bool draw_branches = true;
 static bool draw_clock = true;
 static bool is_fullscreen = false;
+static bool show_shortcuts = true;
 
 struct Res {
   Res(int id) {
@@ -135,31 +141,41 @@ int main(int argc, char *argv[]) {
   sf::Text clock_num;
   clock_num.setFont(font);
   clock_num.setFillColor(clock_face_color);
+  sf::Text show_shortcuts_text;
+  show_shortcuts_text.setFont(font);
+  show_shortcuts_text.setFillColor(clock_face_color);
+  show_shortcuts_text.setCharacterSize(22);
+  show_shortcuts_text.setPosition(10, 10);
   sf::Text clock_type_text;
   clock_type_text.setFont(font);
   clock_type_text.setFillColor(clock_face_color);
-  clock_type_text.setCharacterSize(24);
-  clock_type_text.setPosition(10, 10);
+  clock_type_text.setCharacterSize(22);
+  clock_type_text.setPosition(10, 40);
   sf::Text realtime_text;
   realtime_text.setFont(font);
   realtime_text.setFillColor(clock_face_color);
-  realtime_text.setCharacterSize(24);
-  realtime_text.setPosition(10, 40);
+  realtime_text.setCharacterSize(22);
+  realtime_text.setPosition(10, 70);
   sf::Text tick_text;
   tick_text.setFont(font);
   tick_text.setFillColor(clock_face_color);
-  tick_text.setCharacterSize(24);
-  tick_text.setPosition(10, 70);
+  tick_text.setCharacterSize(22);
+  tick_text.setPosition(10, 100);
   sf::Text draw_branches_text;
   draw_branches_text.setFont(font);
   draw_branches_text.setFillColor(clock_face_color);
-  draw_branches_text.setCharacterSize(24);
-  draw_branches_text.setPosition(10, 100);
+  draw_branches_text.setCharacterSize(22);
+  draw_branches_text.setPosition(10, 130);
   sf::Text draw_clock_text;
   draw_clock_text.setFont(font);
   draw_clock_text.setFillColor(clock_face_color);
-  draw_clock_text.setCharacterSize(24);
-  draw_clock_text.setPosition(10, 130);
+  draw_clock_text.setCharacterSize(22);
+  draw_clock_text.setPosition(10, 160);
+  sf::Text toggle_fullscreen_text;
+  toggle_fullscreen_text.setFont(font);
+  toggle_fullscreen_text.setFillColor(clock_face_color);
+  toggle_fullscreen_text.setCharacterSize(22);
+  toggle_fullscreen_text.setPosition(10, 190);
 
   //Create the window
   sf::VideoMode screenSize = sf::VideoMode(window_w_init, window_h_init, 24);
@@ -195,7 +211,9 @@ int main(int argc, char *argv[]) {
           draw_clock = !draw_clock;
         } else if (keycode == sf::Keyboard::F11) {
           toggle_fullscreen = true;
-        }
+        } else if (keycode == sf::Keyboard::K) {
+	      show_shortcuts = !show_shortcuts;
+		}
       } else if (event.type == sf::Event::Resized) {
         screenSize.width = event.size.width;
         screenSize.height = event.size.height;
@@ -357,16 +375,22 @@ int main(int argc, char *argv[]) {
     }
 
     //Draw UI elements
-    clock_type_text.setString(clock_type_name[clock_type]);
-    window.draw(clock_type_text);
-    realtime_text.setString(realtime_name[use_realtime ? 1 : 0]);
-    window.draw(realtime_text);
-    tick_text.setString(tick_name[use_tick ? 1 : 0]);
-    window.draw(tick_text);
-    draw_branches_text.setString(draw_branches_name[draw_branches ? 1 : 0]);
-    window.draw(draw_branches_text);
-    draw_clock_text.setString(draw_clock_name[draw_clock ? 1 : 0]);
-    window.draw(draw_clock_text);
+	if (show_shortcuts) {
+      clock_type_text.setString(clock_type_name[clock_type]);
+      window.draw(clock_type_text);
+      realtime_text.setString(realtime_name[use_realtime ? 1 : 0]);
+      window.draw(realtime_text);
+      tick_text.setString(tick_name[use_tick ? 1 : 0]);
+      window.draw(tick_text);
+      draw_branches_text.setString(draw_branches_name[draw_branches ? 1 : 0]);
+      window.draw(draw_branches_text);
+      draw_clock_text.setString(draw_clock_name[draw_clock ? 1 : 0]);
+      window.draw(draw_clock_text);
+	  toggle_fullscreen_text.setString(toggle_fullscreen_name[is_fullscreen ? 1 : 0]);
+	  window.draw(toggle_fullscreen_text);
+	  show_shortcuts_text.setString(show_shortcuts_name);
+	  window.draw(show_shortcuts_text);
+	}
 
     //Flip the screen buffer
     window.display();
@@ -384,6 +408,7 @@ int main(int argc, char *argv[]) {
         screenSize = sf::VideoMode(window_w_init, window_h_init, 24);
         window.create(screenSize, "Fractal Clock", sf::Style::Resize | sf::Style::Close, settings);
       }
+	  window.setMouseCursorVisible(!is_fullscreen);
     }
   }
 
