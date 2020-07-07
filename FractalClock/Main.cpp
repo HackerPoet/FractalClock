@@ -117,7 +117,7 @@ void FractalIterHM(sf::Vector2f pt, sf::Vector2f dir, int depth) {
   }
 }
 
-int main(int argc, char *argv[]) {
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nShowCmd) {
   //GL settings
   sf::ContextSettings settings;
   settings.depthBits = 24;
