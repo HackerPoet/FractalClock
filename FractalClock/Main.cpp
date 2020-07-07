@@ -48,7 +48,9 @@ static float ratioS = std::sqrt(1.0f / 2.0f);
 static sf::Color color_scheme[max_iters];
 static bool toggle_fullscreen = false;
 
+#pragma warning(disable:26812)
 static ClockType clock_type = ClockType::HMS;
+#pragma warning(default:26812)
 static bool use_realtime = true;
 static bool use_tick = false;
 static bool draw_branches = true;
@@ -178,7 +180,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         window.close();
         break;
       } else if (event.type == sf::Event::KeyPressed) {
+        #pragma warning(disable:26812)
         const sf::Keyboard::Key keycode = event.key.code;
+        #pragma warning(default:26812)
         if (keycode == sf::Keyboard::Escape) {
           window.close();
           break;
