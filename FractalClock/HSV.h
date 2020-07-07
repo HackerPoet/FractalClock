@@ -10,7 +10,7 @@ inline sf::Color FromHSV(float h, float s, float v) {
   const float t = v * (1 - (1 - f) * s);
 
   //Special cases
-  float r, g, b;
+  float r = 0, g = 0, b = 0;
   switch (i % 6) {
   case 0: r = v, g = t, b = p; break;
   case 1: r = q, g = v, b = p; break;
